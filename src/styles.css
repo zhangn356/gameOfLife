@@ -11,6 +11,6 @@ body{
 
 /* backgroundColor: grid[rowIndex][colIndex] ? "#679289" : "", */
 
-.col.alive{
+.cell.alive{
     background-color: #679289;
 }

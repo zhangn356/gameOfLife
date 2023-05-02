@@ -5,6 +5,7 @@ import { createRoot } from "react-dom/client";
 const App = () => {
 
     const row = 30, col = 30; 
+
     const randomGrid = () => {
         const rows = []; 
         for (let i = 0; i < row; i++){
@@ -15,6 +16,10 @@ const App = () => {
         return rows; 
     };
 
+    const [ grid, setGrid ] = useState(() => {
+        return randomGrid(); 
+    })
+
     const deadOrAlive = (row, col) =>{
         const newGrid = [ ... grid ]; 
         newGrid[row][col] = newGrid[row][col] ? 0 : 1; 
@@ -24,40 +29,37 @@ const App = () => {
     //Accessibility: allows users to navigate through grid cells using keyboard (tab and arrows)
     //Toggle with 'Enter' key 
     const tabDeadOrAlive = (e, row, col ) => {
+        let newRow = row, newCol = col;
         if (e.key === 'ArrowUp' || e.key === 'ArrowDown' 
         || e.key === 'ArrowLeft' || e.key === 'ArrowRight'){
             e.preventDefault(); 
-            let newRow = row, newCol = col;
             switch (e.key) { 
                 case 'ArrowUp':
-                    newRow = row === 0 ? grid.length - 1 : row - 1;
+                    newRow = newRow === 0 ? grid.length - 1 : newRow - 1;
                     break;
                 case 'ArrowDown':
-                    newRow = row === grid.length - 1 ? 0 : row + 1;
+                    newRow = newRow === grid.length - 1 ? 0 : newRow + 1;
                     break;
                 case 'ArrowLeft':
-                    newCol = col === 0 ? grid[0].length - 1 : col - 1;
+                    newCol = newCol === 0 ? grid[0].length - 1 : newCol - 1;
                     break;
                 case 'ArrowRight':
-                    newCol = col === grid[0].length - 1 ? 0 : col + 1;
+                    newCol = newCol === grid[0].length - 1 ? 0 : newCol + 1;
                     break;
                 default:
                     break;
                 }
                 
-        if (newRow !== row || newCol !== col) { 
-            const newCell = document.getElementById(`col${newRow}${newCol}`);
-            newCell.focus();
-            return; 
+            if (newRow !== row || newCol !== col) { 
+                const newCell = document.getElementById(`cell-${newRow}-${newCol}`);
+                newCell.focus();
+            }
+        }
+        if (e.key === 'Enter'){
+            e.preventDefault();
+            deadOrAlive(newRow, newCol)
         }
     }
-}
-
-
-    const [ grid, setGrid ] = useState(() => {
-        return randomGrid(); 
-    })
-    console.log(grid);
 
     return (
     <div>
@@ -66,8 +68,8 @@ const App = () => {
         {
         grid.map((rows, rowIndex) => 
         rows.map((col, colIndex) => 
-            <div className = {`col ${col ? 'alive' : ''}`}
-            id = {`col${rowIndex}${colIndex}`}
+            <div className = {`cell ${col ? 'alive' : ''}`}
+            id = {`cell-${rowIndex}-${colIndex}`}
             role = 'button'
             key = {`${rowIndex}${colIndex}`}
             aria-label = {col ? 'alive cell' : 'dead cell'}
