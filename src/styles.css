@@ -1,0 +1,16 @@
+body{
+    text-align: center;
+}
+
+.board {
+    display: grid;
+    grid-template-columns: repeat(30, 20px);
+    width: fit-content;
+    margin: 0 auto; 
+}
+
+/* backgroundColor: grid[rowIndex][colIndex] ? "#679289" : "", */
+
+.col.alive{
+    background-color: #679289;
+}
