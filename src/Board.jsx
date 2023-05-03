@@ -22,7 +22,8 @@ export default function Board({ rows, cols }) {
     [1, -1],
     [-1, 1],
     [1, 1],
-    [-1, -1][(1, 0)],
+    [-1, -1],
+    [1, 0],
     [-1, 0],
   ];
 
@@ -53,9 +54,17 @@ export default function Board({ rows, cols }) {
   });
 
   useEffect(() => {
+    let intervalId;
+    if (started){
+      intervalId = setInterval(() => {
+        startGame()
+      }, 500)
+    }
+    return () => {
+      clearInterval(intervalId)
+    }
+  }, [started])
 
-  })
-  
   const deadOrAlive = (row, col) => {
     const newGrid = [...grid];
     newGrid[row][col] = newGrid[row][col] ? 0 : 1;
@@ -112,9 +121,6 @@ export default function Board({ rows, cols }) {
           onClick={() => {
             setStart(!started);
             if (!started) startedRef.current = true;
-            setInterval(() => {
-              startGame();
-            }, 1000);
           }}
         >
           {started ? <AiOutlinePause /> : <AiFillCaretRight />}
