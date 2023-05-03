@@ -2,7 +2,6 @@ import { useState, useRef, useCallback, useEffect } from "react";
 import { AiFillCaretRight, AiOutlinePause } from "react-icons/ai";
 
 export default function Board({ rows, cols }) {
-
   const [grid, setGrid] = useState(() => {
     const gridRows = [];
     for (let i = 0; i < rows; i++) {
@@ -11,7 +10,7 @@ export default function Board({ rows, cols }) {
     return gridRows;
   });
 
-  const initialGridRef = useRef(grid); 
+  const initialGridRef = useRef(grid);
   const [started, setStart] = useState(false);
   const startedRef = useRef(started);
   startedRef.current = started;
@@ -56,15 +55,15 @@ export default function Board({ rows, cols }) {
 
   useEffect(() => {
     let intervalId;
-    if (started){
+    if (started) {
       intervalId = setInterval(() => {
-        startGame()
-      }, 500)
+        startGame();
+      }, 500);
     }
     return () => {
-      clearInterval(intervalId)
-    }
-  }, [started])
+      clearInterval(intervalId);
+    };
+  }, [started]);
 
   const deadOrAlive = (row, col) => {
     const newGrid = [...grid];
@@ -73,7 +72,7 @@ export default function Board({ rows, cols }) {
   };
 
   /* Accessibility: allows users to navigate through grid cells using keyboard (tab and arrows)
-  Toggle Cell with 'Enter' key */ 
+  Toggle Cell with 'Enter' key */
 
   const tabDeadOrAlive = (e, row, col) => {
     let newRow = row,
@@ -133,57 +132,53 @@ export default function Board({ rows, cols }) {
           aria-label="Randomly Generates Cells on Board"
           title="Randomly Generates Cells on Board"
           onClick={() => {
-              const gridRows = [];
-              for (let i = 0; i < rows; i++) {
-                gridRows.push(
-                  Array.from(Array(cols), () => Math.floor(Math.random() * 2))
-                );
-              }
-              setGrid(gridRows)
+            const gridRows = [];
+            for (let i = 0; i < rows; i++) {
+              gridRows.push(
+                Array.from(Array(cols), () => Math.floor(Math.random() * 2))
+              );
+            }
+            setGrid(gridRows);
           }}
         >
           Randomizer
         </button>
 
-        <button 
-        className="gameButton" 
-        aria-label="Reset Game" 
-        title="Reset"
-        onClick = {() => {
-          setGrid(initialGridRef.current)
-        }}>
+        <button
+          className="gameButton"
+          aria-label="Reset Game"
+          title="Reset"
+          onClick={() => {
+            setGrid(initialGridRef.current);
+          }}
+        >
           Reset
         </button>
-
-      
-
-
       </div>
 
-      <div className = 'instructions'> 
+      <div className="instructions">
+        {started ? (
+          <p> Enjoy Conway&#39;s Game of Life </p>
+        ) : (
+          <p>
+            Instructions: To begin, draw some shapes on the board with your
+            mouse
+            <br /> or navigate through the board using your tab, arrow, and
+            enter keys. <br />
+            <em> Alternatively</em>, press the randomizer button for a
+            randomized board of live cells.
+            <br /> Click <em> Start </em> to see the Game of Life!
+          </p>
+        )}
+      </div>
 
-      {started ? 
-
-      <p> Enjoy Conway&#39;s Game of Life </p> : 
-
-      <p>Instructions: To begin, draw some shapes on the board with your mouse 
-      <br/> or navigate through the board using your tab, arrow, and enter keys. <br/>
-      <em> Alternatively</em>,  press the randomizer button for a randomized board of live cells. 
-      <br/> Click <em> Start </em> to see the Game of Life!</p>}
-
-       </div> 
-
-      <div className = 'boardContainer'> 
-      <div
-        className="board"
-        role="grid"
-      >
-
+      <div className="board" role="grid">
         {grid.map((row, rowIndex) =>
           row.map((col, colIndex) => (
             <div
               className={`cell ${col ? "alive" : ""}`}
               id={`cell-${rowIndex}-${colIndex}`}
+              data-testid = {`cell-${rowIndex}-${colIndex}`}
               role="gridcell"
               key={`${rowIndex}${colIndex}`}
               aria-label={col ? "alive cell" : "dead cell"}
@@ -203,8 +198,6 @@ export default function Board({ rows, cols }) {
           ))
         )}
       </div>
-      </div>
-
     </div>
   );
 }
