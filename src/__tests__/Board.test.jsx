@@ -46,6 +46,9 @@ describe("Board", () => {
     expect(document.activeElement).toBe(cell3);
     fireEvent.keyDown(cell3, { key: "ArrowLeft" });
     expect(document.activeElement).toBe(testCell);
+    /* no action when non-arrow key is pressed */
+    fireEvent.keyDown(testCell, { key: "a"});
+    expect (document.activeElement).toBe(testCell)
   });
 
   it("brings user to beginning of row or end of row when going past board's horizontal borders", () => {
@@ -100,7 +103,7 @@ describe("Board", () => {
     const cell = getByTestId("cell-0-0");
     const reset = getByTestId("reset-button");
     const randomizer = getByTestId("randomizer");
-    /* ensures all updates to a component are apploed before continuing with further tests */
+    /* ensures all updates to a component are applied before continuing with further tests */
     act(() => {
       fireEvent.click(cell);
       fireEvent.click(reset);
