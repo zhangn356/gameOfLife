@@ -1,60 +1,61 @@
 import { useState, useRef, useCallback, useEffect } from "react";
 import { AiFillCaretRight, AiOutlinePause } from "react-icons/ai";
 
-
 export default function Board({ rows, cols }) {
+  const [grid, setGrid] = useState(() => {
+    const gridRows = [];
+    for (let i = 0; i < rows; i++) {
+      gridRows.push(Array.from(Array(cols), () => 0));
+    }
+    return gridRows;
+  });
 
-      const [grid, setGrid] = useState(() => {
-        const gridRows = [];
-        for (let i = 0; i < rows; i++) {
-          gridRows.push(Array.from(Array(cols), () => 0 ));
-        }
-        return gridRows;
-    });
-    
-    const [started, setStart] = useState(false);
-    const startedRef = useRef(started); 
-    startedRef.current = started; 
+  const initialGridRef = useRef(grid); 
+  const [started, setStart] = useState(false);
+  const startedRef = useRef(started);
+  startedRef.current = started;
 
-   //represents the eight neighbors surrounding a cell
-   const positions = [
+  //represents the eight neighbors surrounding a cell
+  const positions = [
     [0, 1],
     [0, -1],
     [1, -1],
     [-1, 1],
     [1, 1],
-    [-1, -1]
-    [1, 0],
-    [-1, 0]
+    [-1, -1][(1, 0)],
+    [-1, 0],
   ];
 
-  const startGame = () => {
-    if (!startedRef.current) return; 
+  const startGame = useCallback(() => {
+    if (!startedRef.current) return;
     setGrid((g) => {
-      const newGrid = g.map((row, i) =>{
+      const newGrid = g.map((row, i) => {
         return row.map((cell, j) => {
           let neighbors = 0;
           positions.forEach((position) => {
             const x = i + position[0];
-            const y = j + position[1]; 
+            const y = j + position[1];
             //if neighbor cell is within the bounds of board
-            if (x >= 0 && x < rows && y >=0 && y < cols){
+            if (x >= 0 && x < rows && y >= 0 && y < cols) {
               //reassign neighbors to the sum of itself and the neighbor cell
-              neighbors += g[x][y]
+              neighbors += g[x][y];
             }
-          })
+          });
           //any live cell with fewer than 2 live neighbors or more than 3 neighbors dies
-          if (neighbors < 2 || neighbors > 3) return 0; 
+          if (neighbors < 2 || neighbors > 3) return 0;
           //any dead cell with exactly three neighbors becomes alive
           if (neighbors === 3) return 1;
-          return g[i][j]
-        })
-      })
+          return g[i][j];
+        });
+      });
       return newGrid;
-    })
-  }
+    });
+  });
 
+  useEffect(() => {
 
+  })
+  
   const deadOrAlive = (row, col) => {
     const newGrid = [...grid];
     newGrid[row][col] = newGrid[row][col] ? 0 : 1;
@@ -102,36 +103,56 @@ export default function Board({ rows, cols }) {
   };
 
   return (
-    <div className = 'game'>
-    <div className = 'gameControls'>
-      <button
-        className="gameButton"
-        aria-label = { started ? 'Pause Game' : 'Start Game'}
-        title = { started? 'Pause' : 'Start' }
-        onClick={() => {
-            setStart(!started)
+    <div className="game">
+      <div className="gameControls">
+        <button
+          className="gameButton"
+          aria-label={started ? "Pause Game" : "Start Game"}
+          title={started ? "Pause" : "Start"}
+          onClick={() => {
+            setStart(!started);
             if (!started) startedRef.current = true;
             setInterval(() => {
-              startGame()
-            }, 1000)
-        }}
-      >
-        {started ? <AiOutlinePause/> : <AiFillCaretRight />}
-      </button>
+              startGame();
+            }, 1000);
+          }}
+        >
+          {started ? <AiOutlinePause /> : <AiFillCaretRight />}
+        </button>
 
-      <button 
-      className= 'gameButton'
-      aria-label = 'Reset Game'
-      title = 'Reset'
-      > 
-      Reset 
-      </button>
+        <button
+          className="gameButton"
+          aria-label="Randomly Generates Cells on Board"
+          title="Randomly Generates Cells on Board"
+          onClick={() => {
+              const gridRows = [];
+              for (let i = 0; i < rows; i++) {
+                gridRows.push(
+                  Array.from(Array(cols), () => Math.floor(Math.random() * 2))
+                );
+              }
+              setGrid(gridRows)
+          }}
+        >
+          Randomizer
+        </button>
+
+        <button 
+        className="gameButton" 
+        aria-label="Reset Game" 
+        title="Reset"
+        onClick = {() => {
+          setGrid(initialGridRef.current)
+        }}>
+          Reset
+        </button>
       </div>
 
-      <div className="board" 
-      style = {{gridTemplateColumns: `repeat(${cols}, 20px)`}} 
-      role="grid">
-
+      <div
+        className="board"
+        style={{ gridTemplateColumns: `repeat(${cols}, 20px)` }}
+        role="grid"
+      >
         {grid.map((row, rowIndex) =>
           row.map((col, colIndex) => (
             <div
@@ -155,20 +176,7 @@ export default function Board({ rows, cols }) {
             />
           ))
         )}
-
       </div>
-
     </div>
   );
 }
-
-
-
-   // const randomGrid = () => {
-    //     const gridRows = [];
-    //     for (let i = 0; i < row; i++) {
-    //       gridRows.push(Array.from(Array(col), () => Math.floor(Math.random() * 2)));
-    //     }
-    //     return gridRows;
-    //   };
-      

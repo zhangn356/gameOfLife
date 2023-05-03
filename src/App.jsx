@@ -6,7 +6,7 @@ const App = () => {
   return (
     <div>
       <h1> Game of Life </h1>
-      <Board rows = {30} cols = {30} />
+      <Board rows={30} cols={30} />
     </div>
   );
 };
