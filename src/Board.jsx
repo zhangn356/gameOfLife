@@ -2,6 +2,7 @@ import { useState, useRef, useCallback, useEffect } from "react";
 import { AiFillCaretRight, AiOutlinePause } from "react-icons/ai";
 
 export default function Board({ rows, cols }) {
+
   const [grid, setGrid] = useState(() => {
     const gridRows = [];
     for (let i = 0; i < rows; i++) {
@@ -72,7 +73,7 @@ export default function Board({ rows, cols }) {
   };
 
   //Accessibility: allows users to navigate through grid cells using keyboard (tab and arrows)
-  //Toggle with 'Enter' key
+  //Toggle Cell with 'Enter' key
   const tabDeadOrAlive = (e, row, col) => {
     let newRow = row,
       newCol = col;
@@ -152,6 +153,10 @@ export default function Board({ rows, cols }) {
         }}>
           Reset
         </button>
+
+      
+
+
       </div>
 
       <div

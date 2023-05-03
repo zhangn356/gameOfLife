@@ -1,12 +1,16 @@
 import React from "react";
 import { createRoot } from "react-dom/client";
 import Board from "./Board.jsx";
+import GameOfLifeBanner from '../assets/GameOfLifeBanner.png';
 
 const App = () => {
   return (
     <div>
-      <h1> Game of Life </h1>
-      <Board rows={30} cols={30} />
+      <img 
+      src = { GameOfLifeBanner } 
+      style = {{width: '600px', height: '200px', borderRadius: '10px'}}
+      alt = 'Game of Life Banner'></img>
+      <Board rows={25} cols={30} />
     </div>
   );
 };

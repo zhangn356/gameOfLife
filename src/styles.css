@@ -1,16 +1,17 @@
 body{
-    text-align: center;
+    text-align: center;   
+    background: linear-gradient(45deg, #EEEEEE, #FAF8F9, #FFFFFF);
 }
 
 .board {
     display: grid;
-    /* grid-template-columns: repeat(30, 20px); */
     width: fit-content;
     margin: 0 auto; 
+    color: #22223B;
 }
 
 .cell.alive {
-    background-color: #679289;
+    background-color: #9095cf;
 }
 
 .gameControls{
@@ -26,4 +27,8 @@ body{
     font-size: 15px;
     margin: 10px 5px;
     cursor: pointer;
+    color: white;
+    background: #9095cf; 
+    border: none;
+    border-radius: 10px;
 }
