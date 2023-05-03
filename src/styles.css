@@ -4,13 +4,25 @@ body{
 
 .board {
     display: grid;
-    grid-template-columns: repeat(30, 20px);
+    /* grid-template-columns: repeat(30, 20px); */
     width: fit-content;
     margin: 0 auto; 
 }
 
-/* backgroundColor: grid[rowIndex][colIndex] ? "#679289" : "", */
-
-.cell.alive{
+.cell.alive {
     background-color: #679289;
+}
+
+.gameControls{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.gameButton {
+    height: 30px; 
+    width: 60px;
+    font-size: 15px;
+    margin: 10px 5px;
+    cursor: pointer;
 }
