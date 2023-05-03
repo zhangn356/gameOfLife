@@ -72,8 +72,9 @@ export default function Board({ rows, cols }) {
     setGrid(newGrid);
   };
 
-  //Accessibility: allows users to navigate through grid cells using keyboard (tab and arrows)
-  //Toggle Cell with 'Enter' key
+  /* Accessibility: allows users to navigate through grid cells using keyboard (tab and arrows)
+  Toggle Cell with 'Enter' key */ 
+
   const tabDeadOrAlive = (e, row, col) => {
     let newRow = row,
       newCol = col;
@@ -159,11 +160,25 @@ export default function Board({ rows, cols }) {
 
       </div>
 
+      <div className = 'instructions'> 
+
+      {started ? 
+
+      <p> Enjoy Conway&#39;s Game of Life </p> : 
+
+      <p>Instructions: To begin, draw some shapes on the board with your mouse 
+      <br/> or navigate through the board using your tab, arrow, and enter keys. <br/>
+      <em> Alternatively</em>,  press the randomizer button for a randomized board of live cells. 
+      <br/> Click <em> Start </em> to see the Game of Life!</p>}
+
+       </div> 
+
+      <div className = 'boardContainer'> 
       <div
         className="board"
-        style={{ gridTemplateColumns: `repeat(${cols}, 20px)` }}
         role="grid"
       >
+
         {grid.map((row, rowIndex) =>
           row.map((col, colIndex) => (
             <div
@@ -188,6 +203,8 @@ export default function Board({ rows, cols }) {
           ))
         )}
       </div>
+      </div>
+
     </div>
   );
 }

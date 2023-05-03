@@ -8,9 +8,11 @@ const App = () => {
     <div>
       <img 
       src = { GameOfLifeBanner } 
-      style = {{width: '600px', height: '200px', borderRadius: '10px'}}
+      className = 'banner'
       alt = 'Game of Life Banner'></img>
+
       <Board rows={25} cols={30} />
+      
     </div>
   );
 };
