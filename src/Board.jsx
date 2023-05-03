@@ -113,7 +113,7 @@ export default function Board({ rows, cols }) {
   };
 
   return (
-    <div className="game">
+    <div>
       <div className="gameControls">
         <button
           className="gameButton"
@@ -131,6 +131,7 @@ export default function Board({ rows, cols }) {
           className="gameButton"
           aria-label="Randomly Generates Cells on Board"
           title="Randomly Generates Cells on Board"
+          data-testid="randomizer"
           onClick={() => {
             const gridRows = [];
             for (let i = 0; i < rows; i++) {
@@ -147,6 +148,7 @@ export default function Board({ rows, cols }) {
         <button
           className="gameButton"
           aria-label="Reset Game"
+          data-testid="reset-button"
           title="Reset"
           onClick={() => {
             setGrid(initialGridRef.current);
@@ -172,13 +174,13 @@ export default function Board({ rows, cols }) {
         )}
       </div>
 
-      <div className="board" role="grid">
+      <div className="board" data-testid="grid" role="grid">
         {grid.map((row, rowIndex) =>
           row.map((col, colIndex) => (
             <div
               className={`cell ${col ? "alive" : ""}`}
               id={`cell-${rowIndex}-${colIndex}`}
-              data-testid = {`cell-${rowIndex}-${colIndex}`}
+              data-testid={`cell-${rowIndex}-${colIndex}`}
               role="gridcell"
               key={`${rowIndex}${colIndex}`}
               aria-label={col ? "alive cell" : "dead cell"}
